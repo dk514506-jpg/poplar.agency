@@ -111,15 +111,15 @@ Owns project context, decomposition, budget, secrets, canonical plan, architectu
 
 ### Hermes sub-agent
 
-Handles bounded independent research, deeper source inspection, code/tool scaffolding, and implementation tasks in isolated workspaces. It returns evidence-linked artifacts or drafts, not unverified claims.
+Acts as the implementation arm: bounded research packages, deeper source inspection, website and internal-tool implementation, wiki/Kanban scaffolding, documentation, and test execution in isolated workspaces. It builds only from approved tickets and acceptance criteria. It does not set strategy, handle secrets, publish externally, or accept its own work without review.
 
 ### DeepSeek V4 Flash
 
-Use for cost-efficient broad research synthesis, comparative matrices, structured extraction, adversarial alternative generation, and first-pass drafting from supplied evidence. It must not be the final authority on facts; unsupported claims are flagged for verification.
+Acts as the cost-efficient research and synthesis specialist: broad source discovery, Atmosphere-app research, business case-study research, competitor scans, structured extraction, comparison matrices, campaign alternatives, and first-pass copy/information architecture. It must not be the final factual authority or make production edits; unsupported claims become verification gaps.
 
-### Low-cost QA/systems model
+### Low-cost utility/QA model
 
-Use a Haiku-class or equivalent model only for short, bounded QA and mechanical transformations: schema checks, link/citation audits, checklist validation, consistency review, template scaffolding, and concise defect reports. It should not own strategy, creative direction, secrets, or irreversible changes.
+Use whichever available model can reliably stay below the `$0.50` cap for a bounded task; selection is conditional on live provider pricing and runtime availability, not a permanent brand/model assumption. Assign only page triage, field extraction, tagging, deduplication, metadata cleanup, Kanban normalization, checklist linting, regression-test generation, simple classification, and concise defect reports. It must not own strategy, open-ended research, sensitive data, architecture decisions, deployment, or irreversible changes.
 
 ### Human/user
 
