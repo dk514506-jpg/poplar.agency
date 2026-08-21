@@ -1,0 +1,51 @@
+# POPLAR AGENCY — COUNCIL VERDICT (adversarial-substantive)
+
+**Verification record:** all seven artifacts read in full; consistency cross-checked. Found: one duplicate listing, one orphaned state machine, two cross-doc contradictions.
+
+## (a) KERNEL-SPLIT VERDICT — APPROVED WITH MOVES
+The split is sound; "agent never self-approves" is the correct spine. But "auto" is safe only under three conditions the registry must state in §0: (1) reversible or purely internal effect, (2) deterministic run-time verification, (3) failure = quarantine + escalation, never retry.
+- **K-OPE-004 (redemption validation) → auto-with-hold-on-signal.** A validated redemption is a binding merchant obligation (honor-at-validation). Auto-approving past a fraud/velocity flag commits merchant money. Any K-OPE-002 flag or over-velocity → `held`, resolved at daily review. Deferral is lossless; approval is not.
+- **K-OPE-003 (daily review): safe only with** explicit per-exception ack (logged), aging escalation (unacked 24h → page), severity-tiered SLA — fraud-critical signals page immediately, never at daily cadence. Ban tacit-consent timeouts ("unacted = acknowledged" = silent self-approval).
+- **ADD K-OPE-006 consent withdrawal & suppression — AUTO, the one case where auto is legally mandated** (GDPR Art. 7(3) "without undue delay"; CCPA opt-out ≤15 days; withdrawal as easy as grant). Purely subtractive; verification = suppression confirmed in all outbound audiences; failure escalates.
+- **ADD K-APP-004 campaign amendment** (mid-flight offer/budget changes): HUMAN — post-freeze change control is the classic merchant-dispute surface.
+- **ADD K-REC-003 redemption void/refund: HUMAN.** `redemptions.state(active,void,refunded)` exists but no kernel owns those transitions — an orphaned financial state machine.
+- K-LEA-001: auto-**draft** only; distribution human-released (state explicitly).
+- K-DES-002 sits in BOTH human-gated and draft-only lists — resolve to draft-only + human release; categories must be mutually exclusive.
+- K-REC-001 stays human-gated: daemon matches deterministically, human adjudicates exceptions.
+
+## (b) DATA-CONTRACT VERDICT — SOUND SPINE, FIVE GAPS
+Events-as-single-source-of-truth is correct; passport-as-projection matches the boundary. But stateful tables must be declared **projections** — redemptions.state, consents, communications.status change only via new events, never UPDATE — or the spine rots. Amendments:
+- **ADD `exceptions` table** (kernel_run_id, severity, status open/ack/resolved, operator, decision, ts) — the audit spine of "daemon never self-approves" has no entity today.
+- **ADD `campaign_briefs`** (versioned, content_hash, approval_evidence): a `version int` cannot prove what was frozen; freeze = hash-pinned snapshot.
+- **ADD `campaign_templates`** (FR-104 referenced everywhere, defined nowhere).
+- **ADD `users.merchant_id`** (nullable): a merchant_champion with only organization_id can see every merchant — a schema-level tenant hole.
+- **`consents.purpose`: add `fraud_prevention`** — `events.device_risk` is collected under purposes that don't cover it (GDPR purpose limitation). State per-purpose withdrawal rows; processor disclosure rides in notice_version + evidence.
+- `gross_sale_band`: OK for v1, but reports may never sum bands into pseudo-totals.
+- Economics is triplicated (budget / margin_model / economics): offers.margin_model is the binding margin contract; the merchant-approved snapshot lives in campaign_merchants.economics. State precedence.
+- Billing: no invoice/subscription entity — declare out-of-v1-scope explicitly; silent gaps become scope disputes.
+## (c) BOUNDARY VERDICT — RIGHT CONTAINER, ONE CONTRADICTION
+Agency-ops-centered v1 is correct: the ops loop holds Poplar's competence, risk, and data; the customer surface is a thin spoke. Amendments:
+- Contradiction: merchant-champion gates (K-APP-001/002/003) exist in v1 but I-3 console is phase 2. State the v1 mechanism — operator-mediated evidence capture, or a minimal non-console champion surface — or "merchant signs economics" is unbuildable.
+- Add one-tap withdrawal to I-1 ("as easy as to give").
+- Daemon trust column: "engine-bounded, fully logged, non-self-approving" — the prohibition belongs in the trust table.
+
+## (d) GATES VERDICT — TESTABLE, BUT NO-OVERCLAIM NOT YET BINDING
+Gates are genuinely checkable. Fixes:
+- **Make no-overclaim mechanical:** add `reports.attribution_confidence(high|medium|low)` + `baseline_ref`; K-LEA-002's verification FAILS any report claiming "incremental"/"high" without a linked baseline_control. A rule with no schema or check is a wish.
+- "Baseline matches design" is circular — baseline_control must be hash-pinned; "matches" = hash equality.
+- Quarantine: add "no automatic retry; retry is a human decision" — as written, retry-until-pass stays open.
+- Gate 1's ≤30s needs a pre-stated timing protocol (device, N trials) — three cherry-picked rehearsals pass trivially.
+- Gate 5 "reviewed daily": evidence = zero exceptions unacked >24h.
+- Tenant isolation sits in BOTH Gate 2 and Gate 3 — dedupe into Gate 2.
+
+## (e) ROADMAP VERDICT — RIGHT SHAPE, THREE REORDERINGS
+Fixture → rehearsal → pilot → harden is correct. Amendments:
+- Move Gate 3 mechanical checks (secret scan, dep audit, tenant isolation, access control) into Stage 1.
+- Pre-register Stage 3 stop/revise/scale thresholds at Stage 2 EXIT, before live data — a threshold registered mid-pilot is a post-hoc magnet.
+- Add "attribution + baseline methodology, verified on fixtures" to Stage 2; escape-hatch/rollback testing moves to Stage 1 (kernel-engine property).
+- Consent package + legal review completes at Stage 2 exit, not "with" the pilot.
+
+## (f) CLASSIFICATION VERDICT — SOUND TIERS, ONE REAL LEAK VECTOR
+Tiers are right; kernel-names-public is credible. The real leak is **fixtures**: built from real Lakeview/N Broadway research, "labeled DEMO" is not anonymization — real names re-identify. Amendments: fixtures fictionalize names and perturb metrics; CI lint blocks real names/addresses from the research corpus. Dedupe pricing tiers (per-merchant economics RESTRICTED; framework INTERNAL). Any PUBLIC daemon artifact must carry attribution labels and pass the no-overclaim gate.
+
+## COUNCIL VERDICT: KERNEL PRESERVED WITH RAISING — approve the suite as the v1 spine, conditional on: three new kernels (OPE-006 auto; APP-004, REC-003 human-gated), K-OPE-004 hold-on-signal, exceptions/brief-hash/user-scope schema amendments, mechanical no-overclaim enforcement, fixture anonymization. The auto/human split, events ledger, agency-ops boundary, and gate discipline survive recomputation; the weak spots are enforcement surfaces, not design intent.

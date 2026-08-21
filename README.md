@@ -25,6 +25,15 @@ The current strategy and implementation document is in [STRATEGY.md](./STRATEGY.
 
 This repository currently contains the working strategy document. Product implementation should begin only after merchant interviews validate the initial neighborhood, slow-period problem, campaign economics, and willingness to pay.
 
+## Internal operations spec
+
+This is a **private** repository. The internal campaign-operations technical spec
+lives in [`ops/`](./ops/) — the process-kernel registry (the daemon-LLM-agent
+operating model), system boundary, domain model & data contract, verification
+gates, staged roadmap, decisions log, and the public/internal classification.
+These artifacts are INTERNAL and are not for public release without explicit
+review (see `ops/specs/PUBLIC_INTERNAL_CLASSIFICATION.md`).
+
 ## License
 
 Apache License 2.0. See [LICENSE](./LICENSE).

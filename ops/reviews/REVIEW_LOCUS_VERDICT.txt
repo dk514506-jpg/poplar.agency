@@ -1,0 +1,69 @@
+LOCUS (validator-steward, 7-check) — Poplar.agency bore-down review
+Date: 2026-08-20 · Role: Locus
+Artifacts: poplar-ops/kernels/PROCESS_KERNEL_REGISTRY.md (v0.1, 24 kernels, 8 phases);
+           poplar-ops/specs/VERIFICATION_RELEASE_GATES.md (v0.1)
+Contract: Downloads/Poplar Technical Requirements Baseline v0.1 (FR-701–708, §9 gates,
+          §7 data contract, §2 thesis). INTERNAL drafts; no project files edited.
+
+1. DECISION FIDELITY — ADMISSIBLE. Registry decomposes FR-701 field-for-field (decision
+   points folded into `rules`; owner per FR-707); §2 auto/human split correctly labeled
+   as proposal pending Dallas (baseline §11). Gap: neither doc restates fixture-only (Q5)
+   or local-first (Q6) posture; registry omits both.
+
+2. INTERNAL CONSISTENCY — REVISE (light). Gate 0 cites `campaign_merchants.approval_state`
+   — not a literal §7 field (campaign carries approval_state; campaign_merchants carries
+   approved copy/economics). K-LEA-001: operator-gated in §1 table vs "auto, no human
+   gate" in §2. State machine lacks PAUSED though FR-708 names pause. "Reward ladder"
+   (K-DIS-003) drifts from baseline vocabulary "offer rules".
+
+3. EVIDENCE LADDER — ADMISSIBLE. No canned or empirical claims: registry §4 honestly
+   states last_run_verification empty until the fixture slice runs; proposals labeled
+   "for review"; nothing implemented claimed. Two unsourced taglines to fix (below).
+
+4. QUARANTINE — ADMISSIBLE in prose, enforcement unspecified. Both docs assert
+   quarantine-on-failed-verification, no silent retry into success, and no auto-approval
+   of BLOCKED_ON_GATE "no matter how many retries" — stronger than baseline §9. Gap:
+   this load-bearing invariant has no check/evidence/pass-rule row in any gate table.
+
+5. NON-OPERATIONAL — ADMISSIBLE. No rewards-tech/NFT framing; anti-overclaim rule
+   (§96–102) makes "incremental without baseline = gate failure", exactly mirroring
+   FR-603. "Reward ladder" flagged as terminology drift (check 2), not barred framing.
+
+6. PREMATURE COHERENCE — REVISE (light). Nothing claims built-when-only-specified
+   (registry: all kernels "defined", verification field empty). Only the closing
+   taglines ("turns 'the agency experience' from a narrative into a runnable...
+   operating system") overstate a draft's effect.
+
+7. CLOSE COMPLETENESS — REVISE (one gap). Full lifecycle: 24 kernels across all 8
+   phases; all 6 gates (0–5) present with every §9 check. Gap: FR-704 names "stop
+   decisions" as human-gate kernels — no stop/halt kernel exists (K-OPE-002 escalates
+   anomalies but cannot halt). Hardware inventory (FR-804) likewise unkernelled.
+
+EDITORIAL VERDICTS (per major section)
+- Registry §0 contract: APPROVE — FR-701–708 faithfully decomposed.
+- Registry §1 inventory: AMEND — missing stop-decision kernel (FR-704); FR-804 uncovered.
+- Registry §2 split: APPROVE — correctly labeled proposal for Dallas approval.
+- Registry §3 lifecycle: AMEND — PAUSED state absent (FR-708).
+- Registry §4–5: APPROVE — honest empty verification field; open items named.
+- Gates §0 + Gate 0–5 tables: APPROVE — full §9 coverage, fixture-scoped evidence.
+- Gates kernel-specific acceptance: AMEND — prose-only invariant; no testable form.
+- Gates anti-overclaim rule: APPROVE — binding FR-603 mirror.
+
+CONCRETE AMENDMENTS
+A1. Add PAUSED to §3 state machine (FR-708 pause escape hatch).
+A2. Add K-OPE-006 "Stop-condition evaluation & campaign halt" — human-gated
+    (operator + merchant per stop conditions), trigger: stop condition hit or anomaly
+    escalation (FR-704, FR-105).
+A3. Fix Gate 0 evidence: `campaigns.status/approval_state` + `campaign_merchants.economics`
+    per §7; drop non-contract field.
+A4. Re-label K-LEA-001 in §2 as draft-only (operator releases), matching §1.
+A5. Add binding-posture line to registry preamble: fixture-only data (Q5), local-first
+    deployment (Q6), agency-ops-centered (Q1).
+A6. Replace "reward ladder" with "offer/reward structure" (baseline vocabulary).
+A7. Convert kernel-specific acceptance into check/evidence/pass-rule rows, adding a
+    Gate-2 CI test: failed verification → kernel_runs.status=quarantined, surfaced to
+    exceptions queue, zero silent retries; BLOCKED_ON_GATE never auto-approved.
+A8. Reword both closing taglines to future tense; drop or source "mirrors the
+    engineering discipline used across the owner's projects".
+
+LOCUS VERDICT: AMEND
