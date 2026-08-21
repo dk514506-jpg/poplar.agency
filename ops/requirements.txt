@@ -1,0 +1,11 @@
+# Poplar.agency — fixture build dependencies (v0.1)
+# Local-first (D-006), nominal-cost, vendor-neutral. Fixture-only (D-005).
+
+# --- core ---
+python>=3.11
+pytest>=8.0          # Gate-2 test harness
+
+# No runtime third-party deps for the ledger/schema slice — it is stdlib
+# sqlite3 + uuid + json. This keeps the fixture build dependency-free and
+# local-first. Add deps (e.g. a web framework for the customer surface,
+# a secrets store) only when the corresponding Stage-1 surface is built.
